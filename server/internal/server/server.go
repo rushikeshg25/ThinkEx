@@ -8,6 +8,7 @@ import (
 	"time"
 
 	_ "github.com/joho/godotenv/autoload"
+	"gorm.io/gorm"
 
 	"server-go/internal/database"
 )
@@ -18,6 +19,8 @@ type Server struct {
 	db database.Service
 }
 
+var Db *gorm.DB
+
 func NewServer() *http.Server {
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
 	NewServer := &Server{
@@ -25,7 +28,6 @@ func NewServer() *http.Server {
 
 		db: database.New(),
 	}
-
 	server := &http.Server{
 		Addr:         fmt.Sprintf(":%d", NewServer.port),
 		Handler:      NewServer.RegisterRoutes(),
@@ -33,6 +35,8 @@ func NewServer() *http.Server {
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,
 	}
+
+	Db = NewServer.db.GetDbORM()
 
 	return server
 }

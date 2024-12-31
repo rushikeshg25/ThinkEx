@@ -40,6 +40,13 @@ func (s *Server) HelloWorldHandler(c *gin.Context) {
 }
 
 func (s *Server) healthHandler(c *gin.Context) {
+	// Db.Create(&database.User{
+	// 	Id:        "1",
+	// 	Role:      "admin",
+	// 	Balance:   100,
+	// 	CreatedAt: time.Now(),
+	// 	UpdatedAt: time.Now(),
+	// })
 	c.JSON(http.StatusOK, s.db.Health())
 }
 
