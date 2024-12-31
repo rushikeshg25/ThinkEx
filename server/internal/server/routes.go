@@ -17,7 +17,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	r := gin.Default()
 
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173"}, // Add your frontend URL
+		AllowOrigins:     []string{"http://localhost:3000"}, // Add your frontend URL
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"},
 		AllowHeaders:     []string{"Accept", "Authorization", "Content-Type"},
 		AllowCredentials: true, // Enable cookies/auth
@@ -29,7 +29,24 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 	r.GET("/websocket", s.websocketHandler)
 
+	api:=r.Group("/api")
+	{
+		// api.Use()
+		Auth(api.Group("/auth"))
+	}
+
 	return r
+}
+
+
+func Auth(g* gin.RouterGroup){
+	g.GET("/login",func(ctx *gin.Context) {
+		ctx.JSON(http.StatusOK, gin.H{
+			"message": "login",
+		})
+	})
+	g.GET("/logout",)
+	g.GET("/signup",)
 }
 
 func (s *Server) HelloWorldHandler(c *gin.Context) {
