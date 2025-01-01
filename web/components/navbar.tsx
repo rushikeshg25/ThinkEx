@@ -21,7 +21,9 @@ const Navbar = () => {
             <Link href="/portfolio">
               <Button variant="ghost">Portfolio</Button>
             </Link>
-            <Button variant="default">Sign In</Button>
+            <Link href={`${process.env.BACKEND_URL}/auth/google`}>
+              <Button variant="default">Get Started</Button>
+            </Link>
             <ModeToggle />
           </div>
         </div>
