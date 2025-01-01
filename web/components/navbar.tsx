@@ -21,7 +21,7 @@ const Navbar = () => {
             <Link href="/portfolio">
               <Button variant="ghost">Portfolio</Button>
             </Link>
-
+            <Button variant="default">Sign In</Button>
             <ModeToggle />
           </div>
         </div>
