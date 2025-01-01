@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"server-go/internal/database"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/sessions"
@@ -25,7 +27,7 @@ func Auth(g* gin.RouterGroup){
 	store:=sessions.NewCookieStore([]byte(key))
 	store.MaxAge(maxAge)
 	store.Options.Path = "/"
-	store.Options.HttpOnly = true // HttpOnly should always be enabled
+	store.Options.HttpOnly = false // HttpOnly should always be enabled
 	store.Options.Secure = isProd
 
 	gothic.Store = store
@@ -44,7 +46,17 @@ func Auth(g* gin.RouterGroup){
 			})
 			return
 		}
-		fmt.Println(user)
+		fmt.Println(user.Email, user.AvatarURL)
+
+		
+		database.New().GetDbORM().Create(&database.User{
+			Email:     user.Email,
+			Role:      database.CANDIDATE,
+			Picture:   user.AvatarURL,
+			Balance:   100,
+			CreatedAt: time.Now(),
+			UpdatedAt: time.Now(),
+		})
 		c.Redirect(http.StatusFound, "http://localhost:3000/")
 	})
 
@@ -52,7 +64,6 @@ func Auth(g* gin.RouterGroup){
 	g.GET("/google", func(c *gin.Context) {
 		q := c.Request.URL.Query()
 		q.Add("provider", "google")
-
 		c.Request.URL.RawQuery = q.Encode()
 		gothic.BeginAuthHandler(c.Writer, c.Request)
 	})
