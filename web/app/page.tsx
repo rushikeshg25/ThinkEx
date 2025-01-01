@@ -9,7 +9,7 @@ const page = () => {
     <div>
       page
       <Button onClick={() => toast({ title: "Hello" })}>Hello</Button>
-      <a href="http://localhost:8080/api/auth/google">Login with Google</a>
+      <a href="http://localhost:8080/auth/google"> Login </a>
     </div>
   );
 };

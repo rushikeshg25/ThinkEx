@@ -2,15 +2,15 @@ package server
 
 import (
 	"net/http"
+	"server-go/internal/server/controller"
 
 	"fmt"
 	"log"
 	"time"
 
+	"github.com/coder/websocket"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-
-	"github.com/coder/websocket"
 )
 
 func (s *Server) RegisterRoutes() http.Handler {
@@ -20,41 +20,20 @@ func (s *Server) RegisterRoutes() http.Handler {
 		AllowOrigins:     []string{"http://localhost:3000"}, // Add your frontend URL
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"},
 		AllowHeaders:     []string{"Accept", "Authorization", "Content-Type"},
-		AllowCredentials: true, // Enable cookies/auth
+		AllowCredentials: true, 
 	}))
-
-	r.GET("/", s.HelloWorldHandler)
 
 	r.GET("/health", s.healthHandler)
 
 	r.GET("/websocket", s.websocketHandler)
 
-	api:=r.Group("/api")
-	{
-		// api.Use()
-		Auth(api.Group("/auth"))
-	}
-
+	controller.Auth(r.Group("/auth"))
+	controller.Event(r.Group("/event"))
 	return r
 }
 
 
-func Auth(g* gin.RouterGroup){
-	g.GET("/login",func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{
-			"message": "login",
-		})
-	})
-	g.GET("/logout",)
-	g.GET("/signup",)
-}
 
-func (s *Server) HelloWorldHandler(c *gin.Context) {
-	resp := make(map[string]string)
-	resp["message"] = "Hello World"
-
-	c.JSON(http.StatusOK, resp)
-}
 
 func (s *Server) healthHandler(c *gin.Context) {
 	// Db.Create(&database.User{
