@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:latest
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: thinkex
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - volpg:/var/lib/postgresql/data
+
+volumes:
+  volpg:

@@ -7,7 +7,20 @@ dev-web:
 	@cd web && bun run dev
 
 docker-run:
-	@echo "Starting docker containers"
-	@docker compose up
+	@if docker compose up --build 2>/dev/null; then \
+		: ; \
+	else \
+		echo "Falling back to Docker Compose V1"; \
+		docker-compose up --build; \
+	fi
 
-.PHONY: dev-server dev-web
+
+docker-down:
+	@if docker compose down 2>/dev/null; then \
+		: ; \
+	else \
+		echo "Falling back to Docker Compose V1"; \
+		docker-compose down; \
+	fi
+
+.PHONY: dev-server dev-web docker-run docker-down

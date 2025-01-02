@@ -7,23 +7,6 @@ build:
 run:
 	@go run cmd/api/main.go
 
-docker-run:
-	@if docker compose up --build 2>/dev/null; then \
-		: ; \
-	else \
-		echo "Falling back to Docker Compose V1"; \
-		docker-compose up --build; \
-	fi
-
-
-docker-down:
-	@if docker compose down 2>/dev/null; then \
-		: ; \
-	else \
-		echo "Falling back to Docker Compose V1"; \
-		docker-compose down; \
-	fi
-
 test:
 	@echo "Testing..."
 	@go test ./... -v
@@ -33,11 +16,9 @@ itest:
 	@go test ./internal/database -v
 
 
-
 clean:
 	@echo "Cleaning..."
 	@rm -f main
-
 
 watch:
 	@if command -v air > /dev/null; then \
@@ -55,4 +36,4 @@ watch:
             fi; \
         fi
 
-.PHONY: all build run test clean watch docker-run docker-down itest
+.PHONY: all build run test clean watch itest
