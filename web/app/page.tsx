@@ -1,11 +1,16 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Footer } from "@/components/footer";
 import { useToast } from "@/hooks/use-toast";
 
 const page = () => {
   const { toast } = useToast();
-  return <div>page</div>;
+  return (
+    <div>
+      Home Page
+      <Footer />
+    </div>
+  );
 };
 
 export default page;
