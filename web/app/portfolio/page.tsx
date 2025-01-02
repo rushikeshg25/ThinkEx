@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PriceChart } from "@/components/price-chart";
+import { PriceChart } from "@/components/charts/price-chart";
 
 export default function PortfolioPage() {
   return (
